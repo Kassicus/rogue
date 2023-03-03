@@ -2,6 +2,7 @@ import pygame
 
 import lib
 import debug
+import player
 
 pygame.init()
 
@@ -14,6 +15,9 @@ class Game():
         self.clock = pygame.time.Clock()
 
         self.debug_menu = debug.DebugInterface()
+
+        self.player = pygame.sprite.Group()
+        self.player.add(player.p)
 
     def run(self) -> None:
         while self.running:
@@ -38,11 +42,13 @@ class Game():
     def draw(self) -> None:
         self.screen.fill(lib.color.BLACK)
 
+        self.player.draw(self.screen)
+
         if self.debug_menu.active:
             self.debug_menu.draw(self.screen)
 
     def update(self) -> None:
-
+        self.player.update()
         
         self.debug_menu.update(self.clock)
 

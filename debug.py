@@ -30,7 +30,11 @@ class DebugInterface():
         mouse_offset = int(lib.SCREEN_WIDTH - mouse_text.get_width() - 10)
 
         return mouse_text, mouse_offset
-    
+
+    def draw_center(self, surface: pygame.Surface) -> None:
+        pygame.draw.line(surface, lib.color.GREEN, (lib.SCREEN_WIDTH / 2, 0), (lib.SCREEN_WIDTH / 2, lib.SCREEN_HEIGHT))
+        pygame.draw.line(surface, lib.color.RED, (0, lib.SCREEN_HEIGHT / 2), (lib.SCREEN_WIDTH, lib.SCREEN_HEIGHT / 2))
+
     def toggle_active(self) -> None:
         if self.active:
             self.active = False
@@ -40,6 +44,8 @@ class DebugInterface():
     def draw(self, surface: pygame.Surface) -> None:
         surface.blit(self.fps_text, (self.fps_offset, 10))
         surface.blit(self.mouse_text, (self.mouse_offset, 30))
+
+        self.draw_center(surface)
 
     def update(self, clock: pygame.time.Clock) -> None:
         self.fps_text, self.fps_offset = self.get_fps(clock)
