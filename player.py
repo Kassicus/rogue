@@ -1,6 +1,7 @@
 import pygame
 
 import lib
+import spell
 
 class Player(pygame.sprite.Sprite):
     def __init__(self) -> pygame.sprite.Sprite:
@@ -16,6 +17,12 @@ class Player(pygame.sprite.Sprite):
 
         self.rect = self.image.get_rect()
         self.rect.center = self.pos
+
+        self.current_spell = "starter_spell"
+
+        self.spell_list = {
+            "starter_spell": spell.StarterSpell
+        }
 
     def move(self) -> None:
         keys = pygame.key.get_pressed()
@@ -34,10 +41,22 @@ class Player(pygame.sprite.Sprite):
         else:
             self.vel.y = 0
 
+    def event_loop(self) -> None:
+        if pygame.mouse.get_pressed()[0]:
+            self.cast_spell(self.current_spell)
+
+    def cast_spell(self, spell: str) -> None:
+        mouse_x, mouse_y = pygame.mouse.get_pos()
+
+        if spell in self.spell_list:
+            s = self.spell_list[spell](self.pos.x, self.pos.y, mouse_x, mouse_y)
+            lib.active_level.spell_group.add(s)
+
     def update(self) -> None:
         self.pos += self.vel * lib.delta_time
         self.rect.center = self.pos
 
         self.move()
+        self.event_loop()
 
 p = Player()

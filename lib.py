@@ -26,3 +26,5 @@ events = pygame.event.get()
 
 delta_time = 0
 fps_limit = 120
+
+active_level = None
